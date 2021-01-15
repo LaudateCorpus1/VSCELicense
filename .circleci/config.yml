@@ -29,11 +29,15 @@ jobs:
               Write-Output 'The license is still in date'
               Exit 0
             } else {
-              New-SlackMessageAttachment -Color 'red' `
+              $Fields = [pscustomobject]@{
+                ExpiryDate = $expiryStr
+                TestURL = $env:CIRCLE_BUILD_URL
+              }
+              New-SlackMessageAttachment -Color '#ff0000' `
                              -Title 'The Visual Studio License is about to expire' `
                              -TitleLink "$env:CIRCLE_BUILD_URL" `
                              -Text 'Please update the Windows Image' `
-                             -Pretext "Expiry Date: $expiryStr" `
+                             -Fields $Fields `
                              -AuthorName 'Visual Studio License Checker' `
                              -Fallback 'Your client is bad' |
                 New-SlackMessage -IconEmoji :siren: `
