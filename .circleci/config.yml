@@ -25,7 +25,7 @@ jobs:
 
             Write-Output 'Expiry Date:', $expiryStr
 
-            if((Get-Date).AddDays(-2) -ge $test.ExpirationDate) {
+            if((Get-Date) -le $test.ExpirationDate.AddDays(-2)) {
               Write-Output 'The license is still in date'
               Exit 0
             } else {
