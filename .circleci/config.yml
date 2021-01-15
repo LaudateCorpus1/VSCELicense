@@ -1,0 +1,19 @@
+version: 2.1
+
+orbs:
+  win: circleci/windows@2.2.0
+
+jobs:
+  build:
+    executor:
+      name: win/default
+      shell: powershell.exe
+    steps:
+      - checkout
+      - run:
+          name: "Check docker"
+          shell: powershell.exe
+          command: |
+            Import-Module -Name 'VSCELicense.psd1'
+            Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+            Get-VSCELicenseExpirationDate -Version 2019, 2017, 2015
