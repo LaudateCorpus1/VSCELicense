@@ -17,11 +17,11 @@ jobs:
             Import-Module -Name 'C:\Users\circleci\project\VSCELicense.psd1'
             Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
             if((Get-Date).AddDays(-2) -lt $test.ExpirationDate) {
-              write-host('The license is still in date')
+              WriteOutput 'The license is still in date'
               Exit 0
             } else {
-              Write-Host ('The license is expiring and needs to be updated')
-              Write-Host ('Expiry Date:')
-              Write-Host $test.ExpirationDate
+              Write-Output 'The license is expiring and needs to be updated'
+              Write-Output 'Expiry Date:'
+              Write-Output $test.ExpirationDate
               Exit 1
             }
