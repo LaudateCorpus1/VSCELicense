@@ -41,6 +41,7 @@ jobs:
                              -AuthorName 'Visual Studio License Checker' `
                              -Fallback 'Your client is bad' |
                 New-SlackMessage -IconEmoji :siren: `
+                  -AsUser `
                   -Username 'Visual Studio License Checker' |
                 Send-SlackMessage -Uri "$env:SLACK_WEBHOOK_URL"
               Write-Output 'The license is expiring and needs to be updated'
