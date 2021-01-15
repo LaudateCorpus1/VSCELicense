@@ -14,15 +14,29 @@ jobs:
           name: "Check if license is expired"
           shell: powershell.exe
           command: |
+            Install-Module PSSlack -Force
+
             Import-Module -Name 'C:\Users\circleci\project\VSCELicense.psd1'
             Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+
             $test = Get-VSCELicenseExpirationDate -Version 2019
             $expiryStr = $test.ExpirationDate -replace "`n",", " -replace "`r",", "
+
             Write-Output 'Expiry Date:', $expiryStr
+
             if((Get-Date).AddDays(-2) -ge $test.ExpirationDate) {
               Write-Output 'The license is still in date'
               Exit 0
             } else {
+              New-SlackMessageAttachment -Color $([System.Drawing.Color]::red) `
+                             -Title 'The Visual Studio License is about to expire' `
+                             -TitleLink "$env:CIRCLE_BUILD_URL" `
+                             -Text 'Please update the Windows Image' `
+                             -Pretext "Expiry Date: $expiryStr" `
+                             -AuthorName 'Visual Studio License Checker'
+                             -Fallback 'Your client is bad' |
+                New-SlackMessage -IconEmoji :siren: |
+                Send-SlackMessage -Uri "$env:SLACK_WEBHOOK_URL"
               Write-Output 'The license is expiring and needs to be updated'
               Exit 1
             }
