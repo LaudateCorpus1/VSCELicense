@@ -32,7 +32,7 @@ jobs:
               $Fields = [pscustomobject]@{
                 ExpiryDate = $expiryStr
                 TestURL = $env:CIRCLE_BUILD_URL
-              }
+              } | New-SlackField -Short
               New-SlackMessageAttachment -Color '#ff0000' `
                              -Title 'The Visual Studio License is about to expire' `
                              -TitleLink "$env:CIRCLE_BUILD_URL" `
