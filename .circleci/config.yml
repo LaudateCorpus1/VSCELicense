@@ -11,9 +11,16 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Check docker"
+          name: "Check if licsense is expired"
           shell: powershell.exe
           command: |
             Import-Module -Name 'C:\Users\circleci\project\VSCELicense.psd1'
             Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
-            Get-VSCELicenseExpirationDate -Version 2019
+            if((Get-Date).AddDays(-2) -lt $test.ExpirationDate) {
+              write-host('The license is still in date')
+              Exit 0
+            } else {
+              Write-Host ('The license is expiring and needs to be updated')
+              Write-Host ('Expiry Date:', $test.ExpirationDate)
+              Exit 1
+            }
