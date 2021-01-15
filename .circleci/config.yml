@@ -29,15 +29,32 @@ jobs:
               Write-Output 'The license is still in date'
               Exit 0
             } else {
-              New-SlackMessageAttachment -Color $([System.Drawing.Color]::red) `
+              New-SlackMessageAttachment -Color 'red' `
                              -Title 'The Visual Studio License is about to expire' `
                              -TitleLink "$env:CIRCLE_BUILD_URL" `
                              -Text 'Please update the Windows Image' `
                              -Pretext "Expiry Date: $expiryStr" `
                              -AuthorName 'Visual Studio License Checker' `
                              -Fallback 'Your client is bad' |
-                New-SlackMessage -IconEmoji :siren: |
+                New-SlackMessage -IconEmoji :siren: `
+                  -Username 'Visual Studio License Checker' |
                 Send-SlackMessage -Uri "$env:SLACK_WEBHOOK_URL"
               Write-Output 'The license is expiring and needs to be updated'
               Exit 1
             }
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - build
+  nightly:
+    triggers:
+      - schedule:
+          cron: "15 * * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build
