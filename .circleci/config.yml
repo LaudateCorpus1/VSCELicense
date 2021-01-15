@@ -11,7 +11,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Check if licsense is expired"
+          name: "Check if license is expired"
           shell: powershell.exe
           command: |
             Import-Module -Name 'C:\Users\circleci\project\VSCELicense.psd1'
@@ -21,6 +21,7 @@ jobs:
               Exit 0
             } else {
               Write-Host ('The license is expiring and needs to be updated')
-              Write-Host ('Expiry Date:', $test.ExpirationDate)
+              Write-Host ('Expiry Date:')
+              Write-Host $test.ExpirationDate
               Exit 1
             }
