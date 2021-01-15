@@ -14,6 +14,6 @@ jobs:
           name: "Check docker"
           shell: powershell.exe
           command: |
-            Import-Module -Name 'VSCELicense.psd1'
+            Import-Module -Name 'C:\Users\circleci\project\VSCELicense.psd1'
             Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
-            Get-VSCELicenseExpirationDate -Version 2019, 2017, 2015
+            Get-VSCELicenseExpirationDate -Version 2019
