@@ -15,6 +15,7 @@ jobs:
           shell: powershell.exe
           command: |
             Install-Module PSSlack -Force
+            Add-Type -Assembly System.Drawing
 
             Import-Module -Name 'C:\Users\circleci\project\VSCELicense.psd1'
             Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
@@ -33,7 +34,7 @@ jobs:
                              -TitleLink "$env:CIRCLE_BUILD_URL" `
                              -Text 'Please update the Windows Image' `
                              -Pretext "Expiry Date: $expiryStr" `
-                             -AuthorName 'Visual Studio License Checker'
+                             -AuthorName 'Visual Studio License Checker' `
                              -Fallback 'Your client is bad' |
                 New-SlackMessage -IconEmoji :siren: |
                 Send-SlackMessage -Uri "$env:SLACK_WEBHOOK_URL"
