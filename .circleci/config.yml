@@ -16,7 +16,7 @@ jobs:
           command: |
             Import-Module -Name 'C:\Users\circleci\project\VSCELicense.psd1'
             Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
-            $test = Get-Get-VSCELicenseExpirationDate -Version 2019
+            $test = Get-VSCELicenseExpirationDate -Version 2019
             if((Get-Date).AddDays(-2) -lt $test.ExpirationDate) {
               WriteOutput 'The license is still in date'
               Exit 0
